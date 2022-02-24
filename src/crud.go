@@ -69,16 +69,41 @@ func selectA() {
 func selectC() {
 	//查询第一条记录
 	var user User
-	db.First(&user, "name = ?", "a")
+	db.First(&user, "username = ?", "a")
 	fmt.Println("第一条记录：", user)
 
 	//通过map查询
+	var selectMap map[string]interface{}
+	selectMap = make(map[string]interface{})
+	selectMap["ID"] = 4
+	selectMap["UserName"] = "a"
 
+	var users []User
+	users = selectByMap(selectMap)
+	fmt.Println("通过map查询：")
+	for _, v := range users {
+		fmt.Println(v)
+	}
+
+	var usera []User
+	usera = selectSql("1")
+	fmt.Println("通过sql语句查询：")
+	for _, v := range usera {
+		fmt.Println(v)
+	}
+	//fmt.Println(selectByMap(selectMap))
 }
 
-func selectByMap(condition map[string]interface{}) (user []User) {
-	db.Where(condition).Find(user)
-	return
+func selectByMap(condition map[string]interface{}) []User {
+	var users []User
+	db.Where(condition).Find(&users)
+	return users
+}
+
+func selectSql(typr string) []User {
+	var users []User
+	db.Exec("select * from user").Find(&users)
+	return users
 }
 
 //删除
