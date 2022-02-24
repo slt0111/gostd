@@ -65,6 +65,22 @@ func selectA() {
 	//fmt.Println("res:",res)
 }
 
+//自定义查询
+func selectC() {
+	//查询第一条记录
+	var user User
+	db.First(&user, "name = ?", "a")
+	fmt.Println("第一条记录：", user)
+
+	//通过map查询
+
+}
+
+func selectByMap(condition map[string]interface{}) (user []User) {
+	db.Where(condition).Find(user)
+	return
+}
+
 //删除
 func delete() {
 	fmt.Println("delete1")
@@ -77,5 +93,5 @@ func update() {
 }
 func main() {
 	initDB()
-	selectA()
+	selectC()
 }
